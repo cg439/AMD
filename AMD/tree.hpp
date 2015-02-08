@@ -45,13 +45,19 @@ class Tree {
     /// @param[in]  info  This is the information that is stored in this node.
     /// @param[in]  left  The left child shared pointer
     /// @param[in]  right The right child shared pointer
+    
+    explicit Tree (const std::string& info);
+    ///< Construct a new node by storing the value of std::string as the
+    ///  node name
+    ///
+    /// @param[in]  info  This is the information that is stored in this node.
                    
     virtual ~Tree();
     ///< Recursively destroy this tree and everything under it
 
     void swap(Tree& other);
     ///< Swap the entire structure of this tree with that of the other tree. 
-    ///  @param[inout] other The tree that we want to swap with
+    ///  @param[in] other The tree that we want to swap with
 
     bool operator==(const Tree& other) const;
     ///< Check if the current tree is equal to the other tree. For two trees
