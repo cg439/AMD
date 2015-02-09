@@ -7,34 +7,50 @@
 
 BOOST_AUTO_TEST_CASE( InvalidMatrixTreeCreationFailure )
 {  
-    boost::shared_ptr<AMD::detail::Tree> lhs = boost::make_shared<AMD::detail::Tree>("L");  
-    boost::shared_ptr<AMD::detail::Tree> rhs = boost::make_shared<AMD::detail::Tree>("R");  
+    boost::shared_ptr<AMD::detail::Tree> lhs = 
+        boost::make_shared<AMD::detail::Tree>("L");  
+    boost::shared_ptr<AMD::detail::Tree> rhs = 
+        boost::make_shared<AMD::detail::Tree>("R");  
 	boost::shared_ptr<AMD::detail::Tree> null;
 
-    BOOST_CHECK_THROW(AMD::detail::Tree plusInvalidTree("+", lhs, null),std::exception);
-    BOOST_CHECK_THROW(AMD::detail::Tree plusInvalidTree("+", null, null),std::exception);
-	BOOST_CHECK_THROW(AMD::detail::Tree plusInvalidTree("+", rhs, null),std::exception);
-	BOOST_CHECK_THROW(AMD::detail::Tree invalidTree("A", lhs, null),std::exception);
-	BOOST_CHECK_THROW(AMD::detail::Tree invalidTree2("A", rhs, lhs),std::exception);
-	BOOST_CHECK_THROW(AMD::detail::Tree negInvalidTree("-", null, rhs),std::exception);
-	BOOST_CHECK_THROW(AMD::detail::Tree invInvalidTree("_", lhs, rhs),std::exception);
+    BOOST_CHECK_THROW(AMD::detail::Tree plusInvalidTree("+", lhs, null),
+                                                        std::exception);
+    BOOST_CHECK_THROW(AMD::detail::Tree plusInvalidTree("+", null, null),
+                                                        std::exception);
+	BOOST_CHECK_THROW(AMD::detail::Tree plusInvalidTree("+", rhs, null),
+                                                        std::exception);
+	BOOST_CHECK_THROW(AMD::detail::Tree invalidTree("A", lhs, null),
+                                                        std::exception);
+	BOOST_CHECK_THROW(AMD::detail::Tree invalidTree2("A", rhs, lhs),
+                                                        std::exception);
+	BOOST_CHECK_THROW(AMD::detail::Tree negInvalidTree("-", null, rhs),
+                                                        std::exception);
+	BOOST_CHECK_THROW(AMD::detail::Tree invInvalidTree("_", lhs, rhs),
+                                                        std::exception);
 	BOOST_CHECK_THROW(AMD::detail::Tree tranInvalidTree("'"),std::exception);
 	BOOST_CHECK_THROW(AMD::detail::Tree binInvalidTree("+"),std::exception);
-	BOOST_CHECK_THROW(AMD::detail::Tree blankTree("", lhs, rhs), std::exception);
+	BOOST_CHECK_THROW(AMD::detail::Tree blankTree("", lhs, rhs),
+                                                    std::exception);
 	BOOST_CHECK_THROW(AMD::detail::Tree blankTree2(""), std::exception);
 }
 
 BOOST_AUTO_TEST_CASE( ValidMatrixTreeCreationSuccess )
 {
-	boost::shared_ptr<AMD::detail::Tree> lhs = boost::make_shared<AMD::detail::Tree>("L");  
-    boost::shared_ptr<AMD::detail::Tree> rhs = boost::make_shared<AMD::detail::Tree>("R");  
-	boost::shared_ptr<AMD::detail::Tree> bTree = boost::make_shared<AMD::detail::Tree>("B");  
-	boost::shared_ptr<AMD::detail::Tree> regTreeShared = boost::make_shared<AMD::detail::Tree>("A");
+	boost::shared_ptr<AMD::detail::Tree> lhs = 
+        boost::make_shared<AMD::detail::Tree>("L");  
+    boost::shared_ptr<AMD::detail::Tree> rhs = 
+        boost::make_shared<AMD::detail::Tree>("R");  
+	boost::shared_ptr<AMD::detail::Tree> bTree = 
+        boost::make_shared<AMD::detail::Tree>("B");  
+	boost::shared_ptr<AMD::detail::Tree> regTreeShared = 
+        boost::make_shared<AMD::detail::Tree>("A");
 	boost::shared_ptr<AMD::detail::Tree> null;
-	boost::shared_ptr<AMD::detail::Tree> negA = boost::make_shared<AMD::detail::Tree>("-", regTreeShared, null);
-	boost::shared_ptr<AMD::detail::Tree> tranA = boost::make_shared<AMD::detail::Tree>("'", regTreeShared, null);
+	boost::shared_ptr<AMD::detail::Tree> negA = 
+        boost::make_shared<AMD::detail::Tree>("-", regTreeShared, null);
+	boost::shared_ptr<AMD::detail::Tree> tranA = 
+        boost::make_shared<AMD::detail::Tree>("'", regTreeShared, null);
     //needs to be ' null A in terms of parent lhs rhs
-    BOOST_CHECK_NO_THROW(AMD::detail::Tree transTree("'", regTreeShared, null));
+    BOOST_CHECK_NO_THROW(AMD::detail::Tree transTree("'",regTreeShared, null));
 	
     //needs to be _ null A in terms of parent lhs rhs
     BOOST_CHECK_NO_THROW(AMD::detail::Tree invTree("_", regTreeShared, null));
@@ -44,10 +60,12 @@ BOOST_AUTO_TEST_CASE( ValidMatrixTreeCreationSuccess )
 	BOOST_CHECK_NO_THROW(AMD::detail::Tree negTree("-", bTree, regTreeShared));
 	
     //needs to be tr null A in terms of parent lhs rhs
-    BOOST_CHECK_NO_THROW(AMD::detail::Tree traceTree("tr", regTreeShared, null));
+    BOOST_CHECK_NO_THROW(AMD::detail::Tree traceTree("tr", regTreeShared, 
+                                                                    null));
 	
     //needs to be lgdt null A in terms of parent lhs rhs
-    BOOST_CHECK_NO_THROW(AMD::detail::Tree logdetTree("lgdt", regTreeShared, null));
+    BOOST_CHECK_NO_THROW(AMD::detail::Tree logdetTree("lgdt", regTreeShared, 
+                                                                    null));
 	
 	//needs to be * 'A 'B in terms of parent lhs rhs
     BOOST_CHECK_NO_THROW(AMD::detail::Tree mulTree("*", negA, tranA));
@@ -58,8 +76,10 @@ BOOST_AUTO_TEST_CASE( ValidMatrixTreeCreationSuccess )
 BOOST_AUTO_TEST_CASE( ValidSwapSuccess )
 { 
 	///Creates some basic standalone tree nodes to serve as lhs/rhs args
-	boost::shared_ptr<AMD::detail::Tree> bTree = boost::make_shared<AMD::detail::Tree>("B");  
-	boost::shared_ptr<AMD::detail::Tree> aTree = boost::make_shared<AMD::detail::Tree>("A");  
+	boost::shared_ptr<AMD::detail::Tree> bTree = 
+        boost::make_shared<AMD::detail::Tree>("B");  
+	boost::shared_ptr<AMD::detail::Tree> aTree = 
+        boost::make_shared<AMD::detail::Tree>("A");  
 	boost::shared_ptr<AMD::detail::Tree> null;
 	
 	///makes two duplicate trace trees on A
@@ -165,4 +185,5 @@ BOOST_AUTO_TEST_CASE( MirrorEqualsFail )
 {
 
 }
+
 */

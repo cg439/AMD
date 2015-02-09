@@ -59,6 +59,9 @@ class Tree {
     ///< Swap the entire structure of this tree with that of the other tree. 
     ///  @param[in] other The tree that we want to swap with
 
+    bool isLeafNode();
+    ///< Return whether current tree is a leaf node
+    
     bool operator==(const Tree& other) const;
     ///< Check if the current tree is equal to the other tree. For two trees
     ///  to be equal, they should have the exact same structure and the same
