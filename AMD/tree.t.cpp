@@ -4,6 +4,7 @@
 #include <boost/test/unit_test.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
+#include <stdexcept>
 
 BOOST_AUTO_TEST_CASE( InvalidMatrixTreeCreationFailure )
 {  
@@ -14,11 +15,11 @@ BOOST_AUTO_TEST_CASE( InvalidMatrixTreeCreationFailure )
 	boost::shared_ptr<AMD::detail::Tree> null;
 
     BOOST_CHECK_THROW(AMD::detail::Tree plusInvalidTree("+", lhs, null),
-                                                        std::exception);
+                                                        std::runtime_error);
     BOOST_CHECK_THROW(AMD::detail::Tree plusInvalidTree("+", null, null),
-                                                        std::exception);
+                                                        std::runtime_error);
 	BOOST_CHECK_THROW(AMD::detail::Tree plusInvalidTree("+", rhs, null),
-                                                        std::exception);
+                                                        std::runtime_error);
 	BOOST_CHECK_THROW(AMD::detail::Tree invalidTree("A", lhs, null),
                                                         std::exception);
 	BOOST_CHECK_THROW(AMD::detail::Tree invalidTree2("A", rhs, lhs),

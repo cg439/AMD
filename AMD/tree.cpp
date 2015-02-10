@@ -1,5 +1,7 @@
 #include <AMD/tree.hpp>
 #include <boost/log/trivial.hpp>
+#include <exception>
+#include <stdexcept>
 
 namespace AMD { namespace detail {
 
@@ -18,7 +20,7 @@ Tree::Tree (const std::string& info,
                 this->d_right = right;
             }
             else {
-                throw;
+                throw std::runtime_error("Invalid parameters detected.");
             }
         }
         ///if unary op then check for lhs non-null rhs null
@@ -30,7 +32,7 @@ Tree::Tree (const std::string& info,
                 this->d_right = right;
             }
             else {
-                throw;
+                throw std::runtime_error("Invalid parameters detected.");
             }
         }
         ///for special case of neg/subtraction op
@@ -42,7 +44,7 @@ Tree::Tree (const std::string& info,
                 this->d_right = right;
             }
             else{
-                throw;
+                throw std::runtime_error("Invalid parameters detected.");
             }
         }
         ///if any double string or name of a matrix then just check null child
@@ -53,7 +55,7 @@ Tree::Tree (const std::string& info,
         }
         
         else {
-            throw;
+            throw std::runtime_error("Invalid parameters detected."); 
         }
     }
     catch (std::exception& e) {
@@ -69,7 +71,7 @@ Tree::Tree (const std::string& info)
         if ((info == "") || (info == "'") || (info == "_") || (info == "-") || 
         (info == "+") || (info == "*") || (info == "o") || (info == "tr") ||
         (info == "lgdt")) {
-            throw;
+            throw std::runtime_error("Invalid parameters detected."); 
         }
         this->d_info = info;
         this->d_left = null;
