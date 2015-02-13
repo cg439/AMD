@@ -1,10 +1,11 @@
+#include <AMD/exception.hpp>
 #include <AMD/tree.hpp>
 
 #define BOOST_TEST_MODULE TreeTest
+
 #include <boost/test/unit_test.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
-#include <stdexcept>
 
 typedef class AMD::detail::Tree Tree;
 typedef std::runtime_error runtime_error;
@@ -17,7 +18,13 @@ BOOST_AUTO_TEST_CASE( InvalidMatrixTreeCreationFailure )
     shared_ptr<Tree> lhs =  make_shared<Tree>("L");
     shared_ptr<Tree> rhs =  make_shared<Tree>("R");
     shared_ptr<Tree> null;
+    //AMD_START_TRY_BLOCK();
+    
+    Tree plusInvalidTree("+", lhs, null);
+    
+    //AMD_END_TRY_BLOCK();
 
+    
     BOOST_CHECK_THROW(Tree plusInvalidTree("+", lhs, null), runtime_error);
     BOOST_CHECK_THROW(Tree plusInvalidTree("+", null, null),runtime_error);
     BOOST_CHECK_THROW(Tree plusInvalidTree("+", rhs, null), runtime_error);
@@ -29,6 +36,8 @@ BOOST_AUTO_TEST_CASE( InvalidMatrixTreeCreationFailure )
     BOOST_CHECK_THROW(Tree binInvalidTree("+"),std::exception);
     BOOST_CHECK_THROW(Tree blankTree("", lhs, rhs),std::exception);
     BOOST_CHECK_THROW(Tree blankTree2(""), std::exception);
+    //AMD_END_TRY_BLOCK();
+    //AMD_CATCH_AND_PRINT();
 }
 
 BOOST_AUTO_TEST_CASE( ValidMatrixTreeCreationSuccess )
@@ -142,13 +151,6 @@ BOOST_AUTO_TEST_CASE( ValidSwapSuccess )
     BOOST_CHECK(mulTreeA != mulTree2);
     BOOST_CHECK(mulTree != mulTree2);
 }
-
-BOOST_AUTO_TEST_CASE( InvalidSwapFail )
-{
-    Tree testTree(" ", shared_ptr<Tree>(),
-                                shared_ptr<Tree>());
-}
-
 
 BOOST_AUTO_TEST_CASE( ValidEqualsSuccess )
 {

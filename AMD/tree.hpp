@@ -45,7 +45,9 @@ class Tree {
     /// @param[in]  info  This is the information that is stored in this node.
     /// @param[in]  left  The left child shared pointer
     /// @param[in]  right The right child shared pointer
-    
+    explicit Tree (const std::string& info, 
+                   const boost::shared_ptr<Tree>& left);
+
     explicit Tree (const std::string& info);
     ///< Construct a new node by storing the value of std::string as the
     ///  node name
