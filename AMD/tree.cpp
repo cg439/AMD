@@ -2,83 +2,99 @@
 #include <boost/log/trivial.hpp>
 #include <exception>
 #include <stdexcept>
-
+#include <AMD/exception.hpp>
 namespace AMD { namespace detail {
 
 Tree::Tree (const std::string& info, 
             const boost::shared_ptr<Tree>& left, 
             const boost::shared_ptr<Tree>& right)
 {
-    try{
-        ///if binop then no null lhs or rhs allowed
-        if (info == "+" || info == "*"
-        || info == "o") {
-            if ((left) && (right)){
-                this->d_info = info;
-                this->d_left = left;
-                this->d_right = right;
-            }
-            else {
-                throw std::runtime_error("Invalid parameters detected.");
-            }
-        }
-        ///if unary op then check for lhs non-null rhs null
-        else if (info == "'" || info == "_"
-        || info == "tr" || info == "lgdt") {
-            if ((left) && !(right)){
-                this->d_info = info;
-                this->d_left = left;
-                this->d_right = right;
-            }
-            else {
-                throw std::runtime_error("Invalid parameters detected.");
-            }
-        }
-        ///for special case of neg/subtraction op
-        ///check if lhs is non-null
-        else if (info == "-"){
-            if ((left)) {
-                this->d_info = info;
-                this->d_left = left;
-                this->d_right = right;
-            }
-            else{
-                throw std::runtime_error("Invalid parameters detected.");
-            }
-        }
-        ///if any double string or name of a matrix then just check null child
-        else if (!(left) && !(right)){
+  /*  // This is the first function that throws the error
+    throw AMD::ExceptionImpl(
+        APPEND_LOCATION("from foo()"), // location or trace
+        "I throw because I can", // error string
+        AMD_INVALID_OPERATION); // error code
+    */
+    AMD_START_TRY_BLOCK();
+    ///if binop then no null lhs or rhs allowed
+    if (info == "+" || info == "*"
+    || info == "o") {
+        if ((left) && (right)){
             this->d_info = info;
             this->d_left = left;
             this->d_right = right;
         }
-        
         else {
-            throw std::runtime_error("Invalid parameters detected."); 
+            throw AMD::ExceptionImpl(
+                APPEND_LOCATION("In tree constructor"), // location or trace
+                "Invalid parameters detected.", // error string
+                AMD_INVALID_OPERATION); // error code
         }
     }
-    catch (std::exception& e) {
-    ///    BOOST_LOG_TRIVIAL(error) << "Invalid string parameters not accepted for Tree";
+    ///if unary op then check for lhs non-null rhs null
+    else if (info == "'" || info == "_"
+    || info == "tr" || info == "lgdt") {
+        if ((left) && !(right)){
+            this->d_info = info;
+            this->d_left = left;
+            this->d_right = right;
+        }
+        else {
+            throw AMD::ExceptionImpl(
+                APPEND_LOCATION("In tree constructor"), // location or trace
+                "Invalid parameters detected.", // error string
+                AMD_INVALID_OPERATION); // error code
+        }
     }
+    ///for special case of neg/subtraction op
+    ///check if lhs is non-null
+    else if (info == "-"){
+        if ((left)) {
+            this->d_info = info;
+            this->d_left = left;
+            this->d_right = right;
+        }
+        else{
+            throw AMD::ExceptionImpl(
+                APPEND_LOCATION("In tree constructor"), // location or trace
+                "Invalid parameters detected.", // error string
+                AMD_INVALID_OPERATION); // error code
+        }
+    }
+    ///if any double string or name of a matrix then just check null child
+    else if (!(left) && !(right)){
+        this->d_info = info;
+        this->d_left = left;
+        this->d_right = right;
+    }
+    else {
+            throw AMD::ExceptionImpl(
+                APPEND_LOCATION("In tree constructor"), // location or trace
+                "Invalid parameters detected.", // error string
+                AMD_INVALID_OPERATION); // error code
+    }
+    AMD_END_TRY_BLOCK();
+    AMD_CATCH_AND_RETHROW(Tree,Tree)
 }
 
 Tree::Tree (const std::string& info)
 {
     boost::shared_ptr<Tree> null;
-    try {
-        ///invalid string not accepted
-        if ((info == "") || (info == "'") || (info == "_") || (info == "-") || 
-        (info == "+") || (info == "*") || (info == "o") || (info == "tr") ||
-        (info == "lgdt")) {
-            throw std::runtime_error("Invalid parameters detected."); 
-        }
-        this->d_info = info;
-        this->d_left = null;
-        this->d_right = null;
+    AMD_START_TRY_BLOCK();    
+    ///invalid string not accepted
+    if ((info == "") || (info == "'") || (info == "_") || (info == "-") || 
+    (info == "+") || (info == "*") || (info == "o") || (info == "tr") ||
+    (info == "lgdt")) {
+        throw AMD::ExceptionImpl(
+            APPEND_LOCATION("In tree constructor"), // location or trace
+            "Invalid parameters detected.", // error string
+            AMD_INVALID_OPERATION); // error code
     }
-    catch (std::exception& e) {
-    ///    BOOST_LOG_TRIVIAL(error) << "Invalid string parameters not accepted for Tree";
-    }
+    this->d_info = info;
+    this->d_left = null;
+    this->d_right = null;
+    AMD_END_TRY_BLOCK();
+    AMD_CATCH_AND_RETHROW(Tree,Tree)
 }
                    
 Tree::~Tree()
@@ -88,10 +104,6 @@ Tree::~Tree()
 
 void Tree::swap(Tree& other)
 {
-    ///check for null nodes otherwise swap and recurse
-    /*if (!(other)){ 
-        return;
-    }*/
     std::swap(other.d_info, this->d_info);
     this->d_left.swap(other.d_left);
     this->d_right.swap(other.d_right);
