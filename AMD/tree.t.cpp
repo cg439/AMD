@@ -6,70 +6,60 @@
 #include <boost/make_shared.hpp>
 #include <stdexcept>
 
+typedef class AMD::detail::Tree Tree;
+typedef std::runtime_error runtime_error;
+// typedef std::exception exception; FIXME: typdef not useable
+using namespace boost; //shared_ptr, make_shared
+
+
 BOOST_AUTO_TEST_CASE( InvalidMatrixTreeCreationFailure )
 {  
-    boost::shared_ptr<AMD::detail::Tree> lhs = 
-        boost::make_shared<AMD::detail::Tree>("L");  
-    boost::shared_ptr<AMD::detail::Tree> rhs = 
-        boost::make_shared<AMD::detail::Tree>("R");  
-    boost::shared_ptr<AMD::detail::Tree> null;
+    shared_ptr<Tree> lhs =  make_shared<Tree>("L");
+    shared_ptr<Tree> rhs =  make_shared<Tree>("R");
+    shared_ptr<Tree> null;
 
-    BOOST_CHECK_THROW(AMD::detail::Tree plusInvalidTree("+", lhs, null),
-                                                        std::runtime_error);
-    BOOST_CHECK_THROW(AMD::detail::Tree plusInvalidTree("+", null, null),
-                                                        std::runtime_error);
-	BOOST_CHECK_THROW(AMD::detail::Tree plusInvalidTree("+", rhs, null),
-                                                        std::runtime_error);
-	BOOST_CHECK_THROW(AMD::detail::Tree invalidTree("A", lhs, null),
-                                                        std::exception);
-    BOOST_CHECK_THROW(AMD::detail::Tree invalidTree2("A", rhs, lhs),
-                                                        std::exception);
-    BOOST_CHECK_THROW(AMD::detail::Tree negInvalidTree("-", null, rhs),
-                                                        std::exception);
-    BOOST_CHECK_THROW(AMD::detail::Tree invInvalidTree("_", lhs, rhs),
-                                                        std::exception);
-    BOOST_CHECK_THROW(AMD::detail::Tree tranInvalidTree("'"),std::exception);
-    BOOST_CHECK_THROW(AMD::detail::Tree binInvalidTree("+"),std::exception);
-    BOOST_CHECK_THROW(AMD::detail::Tree blankTree("", lhs, rhs),
-                                                    std::exception);
-    BOOST_CHECK_THROW(AMD::detail::Tree blankTree2(""), std::exception);
+    BOOST_CHECK_THROW(Tree plusInvalidTree("+", lhs, null), runtime_error);
+    BOOST_CHECK_THROW(Tree plusInvalidTree("+", null, null),runtime_error);
+    BOOST_CHECK_THROW(Tree plusInvalidTree("+", rhs, null), runtime_error);
+    BOOST_CHECK_THROW(Tree invalidTree("A", lhs, null), std::exception);
+    BOOST_CHECK_THROW(Tree invalidTree2("A", rhs, lhs), std::exception);
+    BOOST_CHECK_THROW(Tree negInvalidTree("-", null, rhs), std::exception);
+    BOOST_CHECK_THROW(Tree invInvalidTree("_", lhs, rhs), std::exception);
+    BOOST_CHECK_THROW(Tree tranInvalidTree("'"),std::exception);
+    BOOST_CHECK_THROW(Tree binInvalidTree("+"),std::exception);
+    BOOST_CHECK_THROW(Tree blankTree("", lhs, rhs),std::exception);
+    BOOST_CHECK_THROW(Tree blankTree2(""), std::exception);
 }
 
 BOOST_AUTO_TEST_CASE( ValidMatrixTreeCreationSuccess )
 {
-    boost::shared_ptr<AMD::detail::Tree> lhs = 
-        boost::make_shared<AMD::detail::Tree>("L");  
-    boost::shared_ptr<AMD::detail::Tree> rhs = 
-        boost::make_shared<AMD::detail::Tree>("R");  
-    boost::shared_ptr<AMD::detail::Tree> bTree = 
-        boost::make_shared<AMD::detail::Tree>("B");  
-    boost::shared_ptr<AMD::detail::Tree> regTreeShared = 
-        boost::make_shared<AMD::detail::Tree>("A");
-    boost::shared_ptr<AMD::detail::Tree> null;
-    boost::shared_ptr<AMD::detail::Tree> negA = 
-        boost::make_shared<AMD::detail::Tree>("-", regTreeShared, null);
-    boost::shared_ptr<AMD::detail::Tree> tranA = 
-        boost::make_shared<AMD::detail::Tree>("'", regTreeShared, null);
+    shared_ptr<Tree> lhs =  make_shared<Tree>("L");  
+    
+    shared_ptr<Tree> rhs = make_shared<Tree>("R");  
+    shared_ptr<Tree> bTree = make_shared<Tree>("B");  
+    shared_ptr<Tree> regTreeShared =  make_shared<Tree>("A");
+    shared_ptr<Tree> null;
+    shared_ptr<Tree> negA = make_shared<Tree>("-", regTreeShared, null);
+    shared_ptr<Tree> tranA = make_shared<Tree>("'", regTreeShared, null);
+
     //needs to be ' null A in terms of parent lhs rhs
-    BOOST_CHECK_NO_THROW(AMD::detail::Tree transTree("'",regTreeShared, null));
+    BOOST_CHECK_NO_THROW(Tree transTree("'",regTreeShared, null));
     
     //needs to be _ null A in terms of parent lhs rhs
-    BOOST_CHECK_NO_THROW(AMD::detail::Tree invTree("_", regTreeShared, null));
+    BOOST_CHECK_NO_THROW(Tree invTree("_", regTreeShared, null));
     
     //needs to be - null A in terms of parent lhs rhs or - A B
-    BOOST_CHECK_NO_THROW(AMD::detail::Tree negTree("-", regTreeShared, null));
-    BOOST_CHECK_NO_THROW(AMD::detail::Tree negTree("-", bTree, regTreeShared));
+    BOOST_CHECK_NO_THROW(Tree negTree("-", regTreeShared, null));
+    BOOST_CHECK_NO_THROW(Tree negTree("-", bTree, regTreeShared));
     
     //needs to be tr null A in terms of parent lhs rhs
-    BOOST_CHECK_NO_THROW(AMD::detail::Tree traceTree("tr", regTreeShared, 
-                                                                    null));
+    BOOST_CHECK_NO_THROW(Tree traceTree("tr", regTreeShared, null));
     
     //needs to be lgdt null A in terms of parent lhs rhs
-    BOOST_CHECK_NO_THROW(AMD::detail::Tree logdetTree("lgdt", regTreeShared, 
-                                                                    null));
+    BOOST_CHECK_NO_THROW(Tree logdetTree("lgdt", regTreeShared, null));
     
     //needs to be * 'A 'B in terms of parent lhs rhs
-    BOOST_CHECK_NO_THROW(AMD::detail::Tree mulTree("*", negA, tranA));
+    BOOST_CHECK_NO_THROW(Tree mulTree("*", negA, tranA));
 }
 ///Test attempts to create a variety of valid trees composed of several tree nodes
 ///checks that no exception is thrown by the tree constructor
@@ -77,26 +67,24 @@ BOOST_AUTO_TEST_CASE( ValidMatrixTreeCreationSuccess )
 BOOST_AUTO_TEST_CASE( ValidSwapSuccess )
 { 
     ///Creates some basic standalone tree nodes to serve as lhs/rhs args
-    boost::shared_ptr<AMD::detail::Tree> bTree = 
-        boost::make_shared<AMD::detail::Tree>("B");  
-    boost::shared_ptr<AMD::detail::Tree> aTree = 
-        boost::make_shared<AMD::detail::Tree>("A");  
-    boost::shared_ptr<AMD::detail::Tree> null;
+    shared_ptr<Tree> bTree =  make_shared<Tree>("B");  
+    shared_ptr<Tree> aTree =  make_shared<Tree>("A");  
+    shared_ptr<Tree> null;
     
     ///makes two duplicate trace trees on A
-    AMD::detail::Tree trTreeA("tr", aTree, null);
-    AMD::detail::Tree trTreeA2("tr", aTree, null);
+    Tree trTreeA("tr", aTree, null);
+    Tree trTreeA2("tr", aTree, null);
     
     ///makes two duplicate trace trees on B
-    AMD::detail::Tree trTreeB("tr", bTree, null);
-    AMD::detail::Tree trTreeB2("tr", bTree, null);
+    Tree trTreeB("tr", bTree, null);
+    Tree trTreeB2("tr", bTree, null);
     
     ///makes two duplicate multiplication trees on A,B
-    AMD::detail::Tree mulTree("*", aTree, bTree);
-    AMD::detail::Tree mulTree2("*", bTree, aTree);
+    Tree mulTree("*", aTree, bTree);
+    Tree mulTree2("*", bTree, aTree);
     
     ///makes a multiplication tree of A, A
-    AMD::detail::Tree mulTreeA("*", aTree, aTree);
+    Tree mulTreeA("*", aTree, aTree);
     
     ///checks equality of all duplicate trees
     BOOST_CHECK(trTreeA == trTreeA2);
@@ -157,23 +145,22 @@ BOOST_AUTO_TEST_CASE( ValidSwapSuccess )
 
 BOOST_AUTO_TEST_CASE( InvalidSwapFail )
 {
-    AMD::detail::Tree testTree(" ", boost::shared_ptr<AMD::detail::Tree>(),
-                                boost::shared_ptr<AMD::detail::Tree>());
+    Tree testTree(" ", shared_ptr<Tree>(),
+                                shared_ptr<Tree>());
 }
 
 
 BOOST_AUTO_TEST_CASE( ValidEqualsSuccess )
 {
-    typedef class AMD::detail::Tree Tree;
-    boost::shared_ptr<Tree> nil;
-    boost::shared_ptr<Tree> node1 = boost::make_shared<Tree>("M",nil,nil);
-    boost::shared_ptr<Tree> node2 = boost::make_shared<Tree>("M",nil,nil);
-    boost::shared_ptr<Tree> node3 = boost::make_shared<Tree>("N",nil,nil);
-    boost::shared_ptr<Tree> node4 = boost::make_shared<Tree>("*",node1,node1);
-    boost::shared_ptr<Tree> node5 = boost::make_shared<Tree>("*",node1,node2);
-    boost::shared_ptr<Tree> node6 = boost::make_shared<Tree>("*",node1,node3);
-    boost::shared_ptr<Tree> node7 = boost::make_shared<Tree>("'",node5,nil);
-    boost::shared_ptr<Tree> node8 = boost::make_shared<Tree>("'",node4,nil);
+    shared_ptr<Tree> nil;
+    shared_ptr<Tree> node1 = make_shared<Tree>("M",nil,nil);
+    shared_ptr<Tree> node2 = make_shared<Tree>("M",nil,nil);
+    shared_ptr<Tree> node3 = make_shared<Tree>("N",nil,nil);
+    shared_ptr<Tree> node4 = make_shared<Tree>("*",node1,node1);
+    shared_ptr<Tree> node5 = make_shared<Tree>("*",node1,node2);
+    shared_ptr<Tree> node6 = make_shared<Tree>("*",node1,node3);
+    shared_ptr<Tree> node7 = make_shared<Tree>("'",node5,nil);
+    shared_ptr<Tree> node8 = make_shared<Tree>("'",node4,nil);
 
     BOOST_CHECK (*node1 == *node2);
     // Single equal node
@@ -195,18 +182,18 @@ BOOST_AUTO_TEST_CASE( ValidEqualsSuccess )
 }
 // BOOST_AUTO_TEST_CASE( InvalidEqualsFails )
 // {
-//     AMD::detail::Tree testTree(" ", boost::shared_ptr<AMD::detail::Tree>(),
-//                                 boost::shared_ptr<AMD::detail::Tree>());
+//     Tree testTree(" ", shared_ptr<Tree>(),
+//                                 shared_ptr<Tree>());
 // }
 // BOOST_AUTO_TEST_CASE( DestructorSuccess )
 // {
-//     AMD::detail::Tree testTree(" ", boost::shared_ptr<AMD::detail::Tree>(),
-//                                 boost::shared_ptr<AMD::detail::Tree>());
+//     Tree testTree(" ", shared_ptr<Tree>(),
+//                                 shared_ptr<Tree>());
 // }
 // BOOST_AUTO_TEST_CASE( MirrorEqualsSuccess )
 // {
-//     AMD::detail::Tree testTree(" ", boost::shared_ptr<AMD::detail::Tree>(),
-//                                 boost::shared_ptr<AMD::detail::Tree>());
+//     Tree testTree(" ", shared_ptr<Tree>(),
+//                                 shared_ptr<Tree>());
 // }
 // BOOST_AUTO_TEST_CASE( MirrorEqualsFail )
 // {
