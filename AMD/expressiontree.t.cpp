@@ -14,10 +14,12 @@ BOOST_AUTO_TEST_CASE ( Constructor )
     AMD_START_TRY_BLOCK()
     boost::shared_ptr<ExprTree> nodeC = boost::make_shared<ExprTree>("C",nil,nil);
     boost::shared_ptr<ExprTree> nodeA = boost::make_shared<ExprTree>("A",nil,nil);
-    boost::shared_ptr<ExprTree> nodeB = boost::make_shared<ExprTree>("'",nodeC,nodeA);
+    
+    //Not sure if this works as the boost check seems to fail to realize the exception was thrown
+    BOOST_CHECK_THROW(boost::shared_ptr<ExprTree> nodeB = boost::make_shared<ExprTree>("'",nodeC,nodeA),AMD::ExceptionImpl);
     AMD_END_TRY_BLOCK()
     AMD_CATCH_AND_PRINT()
-
+    
     AMD_START_TRY_BLOCK()
     boost::shared_ptr<ExprTree> nodeX = boost::make_shared<ExprTree>("C",nil,nil);
     boost::shared_ptr<ExprTree> nodeY = boost::make_shared<ExprTree>("tr",nil,nodeX);
@@ -47,7 +49,6 @@ BOOST_AUTO_TEST_CASE ( Constructor )
     boost::shared_ptr<ExprTree> nodeY = boost::make_shared<ExprTree>("Y",nodeC,nodeA);
     AMD_END_TRY_BLOCK()
     AMD_CATCH_AND_PRINT()
-
 }
 
 
@@ -68,6 +69,6 @@ BOOST_AUTO_TEST_CASE ( MirrorEqual )
     boost::shared_ptr<Tree> node7 = boost::make_shared<Tree>("*",node2,node1);
 
     BOOST_CHECK ((*node4 == *node5));
-    BOOST_CHECK (!(*node6 == *node7));
+    BOOST_CHECK ((*node6 != *node7));
 
 }

@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_CASE( ValidEqualsSuccess )
 
 // }
 
-BOOST_AUTO_TEST_CASE ( swap )
+BOOST_AUTO_TEST_CASE ( SwapTest2 )
 {
     typedef class AMD::detail::Tree Tree;
     boost::shared_ptr<Tree> nil;
