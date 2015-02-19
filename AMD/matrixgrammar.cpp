@@ -3,10 +3,10 @@
 namespace AMD {
 namespace detail {
 
-void BinaryOp::operator()(spirit::utree& parent, 
-                          spirit::utree const& rhs) const
+void BinaryOp::operator()(ExpressionTree& parent, 
+                          ExpressionTree const& rhs) const
 {
-    spirit::utree lhs;
+    ExpressionTree lhs;
     lhs.swap(parent);
     parent.push_back(spirit::utf8_symbol_range_type(&d_op, &d_op+1));
     parent.push_back(lhs);
@@ -16,8 +16,8 @@ void BinaryOp::operator()(spirit::utree& parent,
 ///  Changes current node in tree to lhs arguement, pushes the operator 
 ///  followed by the expressions involved
 
-void UnaryOp::operator()(spirit::utree& expr, 
-                         spirit::utree const& rhs) const
+void UnaryOp::operator()(ExpressionTree& expr, 
+                         ExpressionTree const& rhs) const
 {
     expr.clear();
     expr.push_back(spirit::utf8_symbol_range_type(&d_op, &d_op+1));
