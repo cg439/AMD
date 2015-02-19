@@ -74,10 +74,12 @@ bool Tree::operator==(const Tree& other) const
         return *(other.d_right) == *(this->d_right);
     else
     {
-        return ((*(other.d_right) == *(this.d_right))
-           && (*(other.d_left) == *(this.d_left)) ||
+        return (*(other.d_right) == *(this.d_right))
+           && (*(other.d_left) == *(this.d_left));
+          /* ||
            (*(other.d_right) == *(this.d_left)) &&
            (*(other.d_left) == *(this.d_right)));
+        */
     }
 }
 
