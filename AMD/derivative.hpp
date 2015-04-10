@@ -17,18 +17,25 @@
 
 namespace AMD {
 
-static int derivativeOptimizationLevel;
-///< A flag that is used to keep track of what level of optimization
+typedef struct OptimizationFlags
+{
+	bool subtree_reduction;
+} *OptimizationFlags_T;
+
+static OptimizationFlags_T optimization_flags;
+///< A set of flags that is used to keep track of what optimizations
 //   should be used when computing derivatives
 
 Expression generateDerivativeExpression(
                            const Expression& expr, 
-                           const std::string targetMatrix);
+                           const std::string targetMatrix,
+                           const OptimizationFlags_T optimizations);
 ///< Harness for differentiation, takes in an expression and sets up
 //   initial prior depending on whether it's a trace or lgdt expression
 //   Then calls the recursive helper method to kickoff differentiation
 //   @param[in] expr The expression to be differentiated
 //   @param[in] targetMatrix The matrix to differentiate with respect to
+//   @param[in] optimizations The set of flags for derivative optimizations
 //   @return A boost shared_ptr to a Tree representing the derivative expr
 
 Expression generateDerivativeExpressionHelper(
@@ -87,5 +94,10 @@ static Expression addExpr(Expression& left, Expression& right);
 //  @return A shared pointer to a tree composed of the two inputs combined with 
 //  a plus operation node
 
+static Expression reduce(const Expression& expr);
+///< Takes in a derivative expression and reduces it by simplifying down to 
+///  known identities
+/// @param[in] expr The ExpressionTree representing the derivative
+//  @return A shared pointer to a tree composed of the reduced derivative
 
 }//End AMD namespace

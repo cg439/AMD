@@ -52,8 +52,12 @@ int main()
             {
                 try {
                     //default target matrix is X
-                    AMD::Expression derivative = AMD::generateDerivativeExpression(myExpr, "X");
-                    std::cout << "Differentiation succeeded: " << *derivative << "\n";
+                    struct AMD::OptimizationFlags flags;
+                    flags.subtree_reduction = false;
+                    AMD::Expression derivative = 
+                        AMD::generateDerivativeExpression(myExpr, "X", &flags);
+                    std::cout << "Differentiation succeeded: " << 
+                        *derivative << "\n";
                 } catch (const std::exception& e) {
                     std::cout << e.what() << std::endl;
                 } 

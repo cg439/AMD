@@ -127,13 +127,16 @@ Expression calcInverseDerivative(Expression expr,
 }
 
 Expression generateDerivativeExpression(const Expression& expr, 
-                                        const std::string variable)
+                                        const std::string variable,
+                                        const OptimizationFlags_T optimizations)
 {
     const ExpressionTree& tree = *expr;
     //Trace: tr(G(X)) = F(G(X))
     //R = I
     if (tree.info() == "tr") {
-        return calcTraceDerivative(expr, variable);
+        Expression untrimmedDerivative = calcTraceDerivative(expr, variable);
+        return optimizations->subtree_reduction ? reduce(untrimmedDerivative) 
+            : untrimmedDerivative;
     }
     //Log Determinant: lgdt(G(X)) = F(G(X))
     //R = G(X)'_
@@ -229,6 +232,29 @@ static Expression addExpr(Expression& left, Expression& right)
 {
     Expression parent(new ExpressionTree("+",left,right));
     return parent;
+}
+
+static Expression reduce(const Expression& expr)
+{
+    const ExpressionTree& tree = *expr;
+    LOG_INFO << "Entered reduce with expression: " << tree.info();
+
+    // Just covers binary addition for now
+
+    std::string i = tree.info();
+    if (i != "+" && i != "-" && i != "tr" && i != "lgdt" && i != "o" && 
+        i != "_" && i != "'") {
+        return expr;
+    } else {
+        Expression reducedL = reduce(tree.left());
+        Expression reducedR = reduce(tree.right());
+        if (tree.right() && (i == "+" || i == "-") 
+            && (reducedL == ZERO || reducedR == ZERO)) {
+            return reducedL == ZERO ? reducedR : reducedL;
+        } 
+        Expression new_parent(new ExpressionTree(i, reducedL, reducedR));
+        return new_parent;
+    }
 }
 
 } //End namespace
