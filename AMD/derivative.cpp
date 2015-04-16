@@ -239,19 +239,25 @@ static Expression reduce(const Expression& expr)
     const ExpressionTree& tree = *expr;
     LOG_INFO << "Entered reduce with expression: " << tree.info();
 
-    // Just covers binary addition for now
-
     std::string i = tree.info();
+
     if (i != "+" && i != "-" && i != "tr" && i != "lgdt" && i != "o" && 
         i != "_" && i != "'") {
         return expr;
-    } else {
+    } 
+    else 
+    {
         Expression reducedL = reduce(tree.left());
         Expression reducedR = reduce(tree.right());
         if (tree.right() && (i == "+" || i == "-") 
             && (reducedL == ZERO || reducedR == ZERO)) {
+            // Child of binary addition or subtraction is zero
+            // can be reduced from X+0 or X-0 to just X, for example
+            LOG_INFO << "Child node is zero in binary addition or 
+                         subtraction.  Removing this node."
             return reducedL == ZERO ? reducedR : reducedL;
-        } 
+        }
+        else if (i = "-")
         Expression new_parent(new ExpressionTree(i, reducedL, reducedR));
         return new_parent;
     }

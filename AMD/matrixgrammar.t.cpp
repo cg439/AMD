@@ -27,14 +27,14 @@ bool compareExpectedExpressions(const std::string& exprString,
     if (false == result) {
         LOG_ERROR << "Parsing failed";
         throw AMD::ExceptionImpl(
-                    APPEND_LOCATION("from generateExpression"),
+                    APPEND_LOCATION("from compareExpectedExpressions"),
                     "Parsing failed",
                     AMD_INVALID_EXPRESSION);
 
     } else if (iter != end) {
         LOG_ERROR << ("Parsing failed at: " + std::string(iter, end));
         throw AMD::ExceptionImpl(
-                    APPEND_LOCATION("from generateExpression"),
+                    APPEND_LOCATION("from compareExpectedExpressions"),
                     ("Parsing failed at: " + std::string(iter, end)).c_str(),
                     AMD_INVALID_EXPRESSION);
     } 

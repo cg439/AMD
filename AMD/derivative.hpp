@@ -63,28 +63,77 @@ Expression generateDerivativeExpressionHelper(
 Expression calcNegationDerivative(Expression expr,
                                   Expression Z,
                                   const std::string variable);
+///< Recursively calculates the derivative expression for negation
+/// @param[in] expr  ExpressionTree to take the derivative of
+/// @param[in] acc    ExpressionTree representing the accumulated derivative
+/// @param[in] targetMatrix Char value representing what we're 
+//  taking the derivative with respect to, used to determine which matrices
+//  are considered a constant matrix and which are considered variables
+//  @return a shared_ptr to a Tree representing the accumulated derivative
 
 Expression calcTransposeDerivative(Expression expr,
                                    Expression Z,
                                    const std::string variable);
+///< Recursively calculates the derivative expression for transpose
+/// @param[in] expr  ExpressionTree to take the derivative of
+/// @param[in] acc    ExpressionTree representing the accumulated derivative
+/// @param[in] targetMatrix Char value representing what we're 
+//  taking the derivative with respect to, used to determine which matrices
+//  are considered a constant matrix and which are considered variables
+//  @return a shared_ptr to a Tree representing the accumulated derivative
 
 Expression calcProductDerivative(Expression expr,
                                  Expression Z,
                                  const std::string variable);
+///< Recursively calculates the derivative expression for product
+/// @param[in] expr  ExpressionTree to take the derivative of
+/// @param[in] acc    ExpressionTree representing the accumulated derivative
+/// @param[in] targetMatrix Char value representing what we're 
+//  taking the derivative with respect to, used to determine which matrices
+//  are considered a constant matrix and which are considered variables
+//  @return a shared_ptr to a Tree representing the accumulated derivative
 
 Expression calcElemProductDerivative(Expression expr,
                                      Expression Z,
                                      const std::string variable);
+///< Recursively calculates the derivative expression for elementwise product
+/// @param[in] expr  ExpressionTree to take the derivative of
+/// @param[in] acc    ExpressionTree representing the accumulated derivative
+/// @param[in] targetMatrix Char value representing what we're 
+//  taking the derivative with respect to, used to determine which matrices
+//  are considered a constant matrix and which are considered variables
+//  @return a shared_ptr to a Tree representing the accumulated derivative
 
 Expression calcTraceDerivative(Expression expr,
                                const std::string variable);
+///< Recursively calculates the derivative expression for trace
+/// @param[in] expr  ExpressionTree to take the derivative of
+/// @param[in] acc    ExpressionTree representing the accumulated derivative
+/// @param[in] targetMatrix Char value representing what we're 
+//  taking the derivative with respect to, used to determine which matrices
+//  are considered a constant matrix and which are considered variables
+//  @return a shared_ptr to a Tree representing the accumulated derivative
 
 Expression calcLogDetDerivative(Expression expr,
                                 const std::string variable);
+///< Recursively calculates the derivative expression for lgdt
+/// @param[in] expr  ExpressionTree to take the derivative of
+/// @param[in] acc    ExpressionTree representing the accumulated derivative
+/// @param[in] targetMatrix Char value representing what we're 
+//  taking the derivative with respect to, used to determine which matrices
+//  are considered a constant matrix and which are considered variables
+//  @return a shared_ptr to a Tree representing the accumulated derivative
 
 Expression calcInverseDerivative(Expression expr,
                                  Expression Z,
                                  const std::string variable);
+///< Recursively calculates the derivative expression for inverse
+/// @param[in] expr  ExpressionTree to take the derivative of
+/// @param[in] acc    ExpressionTree representing the accumulated derivative
+/// @param[in] targetMatrix Char value representing what we're 
+//  taking the derivative with respect to, used to determine which matrices
+//  are considered a constant matrix and which are considered variables
+//  @return a shared_ptr to a Tree representing the accumulated derivative
 
 
 static Expression addExpr(Expression& left, Expression& right);
