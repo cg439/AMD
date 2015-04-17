@@ -257,7 +257,6 @@ static Expression reduce(const Expression& expr)
                          subtraction.  Removing this node."
             return reducedL == ZERO ? reducedR : reducedL;
         }
-        else if (i = "-")
         Expression new_parent(new ExpressionTree(i, reducedL, reducedR));
         return new_parent;
     }
