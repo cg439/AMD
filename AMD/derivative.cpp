@@ -253,11 +253,10 @@ static Expression reduce(const Expression& expr)
             && (reducedL == ZERO || reducedR == ZERO)) {
             // Child of binary addition or subtraction is zero
             // can be reduced from X+0 or X-0 to just X, for example
-            LOG_INFO << "Child node is zero in binary addition or 
-                         subtraction.  Removing this node."
+            LOG_INFO << "Child node is zero in binary addition or "
+                        << "subtraction.  Removing this node.";
             return reducedL == ZERO ? reducedR : reducedL;
         }
-        else if (i = "-")
         Expression new_parent(new ExpressionTree(i, reducedL, reducedR));
         return new_parent;
     }
