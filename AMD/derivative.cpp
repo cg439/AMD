@@ -249,13 +249,60 @@ static Expression reduce(const Expression& expr)
     {
         Expression reducedL = reduce(tree.left());
         Expression reducedR = reduce(tree.right());
-        if (tree.right() && (i == "+" || i == "-") 
-            && (reducedL == ZERO || reducedR == ZERO)) {
-            // Child of binary addition or subtraction is zero
-            // can be reduced from X+0 or X-0 to just X, for example
-            LOG_INFO << "Child node is zero in binary addition or "
-                        << "subtraction.  Removing this node.";
-            return reducedL == ZERO ? reducedR : reducedL;
+        if (tree.right()){{
+            if (i == "+" && reducedL == ZERO || reducedR == ZERO){
+                // Child of binary addition is zero
+                // can be reduced from X+0 or 0+X to just X, for example
+                LOG_INFO << "Child node is zero in binary addition. "
+                            << "Removing this node.";
+                return reducedL == ZERO ? reducedR : reducedL;
+            }
+            else if (i == "*"){
+                if (reducedL == ZERO || reducedR == ZERO){
+                    // Child of binary multiplication is zero
+                    // can be reduced from X*0 or 0*X to just 0, for example
+                    LOG_INFO << "Child node is zero in binary multiplication. "
+                                << "Removing this node.";
+                    return ZERO;
+                }
+                else if (reducedL == IDENTITY || reducedR == IDENTITY){
+                    // Child of binary multiplication is identity
+                    // can be reduced from X*I or I*X to just X, for example
+                    LOG_INFO << "Child node is identity in binary "
+                                << "multiplication. Removing this node.";
+                    return reducedL == IDENTITY ? reducedR : reducedL;
+                }
+            }
+            else if (i == "o"){
+                if (reducedL == ZERO || reducedR == ZERO){
+                    // Child of binary elementwise multiplication is zero
+                    // can be reduced from Xo0 or 0oX to just 0, for example
+                    LOG_INFO << "Child node is zero in binary elementwise"
+                                << " multiplication. Removing this node.";
+                    return ZERO;
+                }
+            }
+            else if (i == "-"){
+                if (reducedL == ZERO && reducedR == ZERO){
+                    return ZERO;
+                }
+                else if(reducedL == ZERO){
+                    Expression new_parent(new ExpressionTree("-", reducedR, NIL));
+                    return new_parent;
+                }
+                else if (reducedR == ZERO){
+                    return reducedL;
+                }
+            }
+        }
+        else {
+            if (i == "\'" && (*reducedL).info() == "\'"){
+                return (*reduceL).left();
+            }
+            else if (i == "_" && (*reducedL).info() == "_"){
+                return (*reduceL).left();
+            }
+        
         }
         Expression new_parent(new ExpressionTree(i, reducedL, reducedR));
         return new_parent;
