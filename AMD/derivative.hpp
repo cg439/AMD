@@ -136,14 +136,14 @@ Expression calcInverseDerivative(Expression expr,
 //  @return a shared_ptr to a Tree representing the accumulated derivative
 
 
-static Expression addExpr(Expression& left, Expression& right);
+Expression addExpr(Expression& left, Expression& right);
 ///< Joins the left and right expression accumulations with a plus operation
 /// @param[in] left The ExpressionTree representing the left accumulator
 /// @param[in] right The ExpressionTree representing the right accumulator
 //  @return A shared pointer to a tree composed of the two inputs combined with 
 //  a plus operation node
 
-static Expression reduce(const Expression& expr);
+Expression reduce(const Expression& expr);
 ///< Takes in a derivative expression and reduces it by simplifying down to 
 ///  known identities
 /// @param[in] expr The ExpressionTree representing the derivative

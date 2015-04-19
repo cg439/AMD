@@ -228,13 +228,13 @@ Expression generateDerivativeExpressionHelper(const Expression& expr,
     }
 }
 
-static Expression addExpr(Expression& left, Expression& right)
+Expression addExpr(Expression& left, Expression& right)
 {
     Expression parent(new ExpressionTree("+",left,right));
     return parent;
 }
 
-static Expression reduce(const Expression& expr)
+Expression reduce(const Expression& expr)
 {
     const ExpressionTree& tree = *expr;
     LOG_INFO << "Entered reduce with expression: " << tree.info();
@@ -249,7 +249,7 @@ static Expression reduce(const Expression& expr)
     {
         Expression reducedL = reduce(tree.left());
         Expression reducedR = reduce(tree.right());
-        if (tree.right()){{
+        if (tree.right()){
             if (i == "+" && reducedL == ZERO || reducedR == ZERO){
                 // Child of binary addition is zero
                 // can be reduced from X+0 or 0+X to just X, for example
@@ -297,10 +297,10 @@ static Expression reduce(const Expression& expr)
         }
         else {
             if (i == "\'" && (*reducedL).info() == "\'"){
-                return (*reduceL).left();
+                return (*reducedL).left();
             }
             else if (i == "_" && (*reducedL).info() == "_"){
-                return (*reduceL).left();
+                return (*reducedL).left();
             }
         
         }

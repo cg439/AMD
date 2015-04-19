@@ -31,7 +31,7 @@ int main()
         AMD::Expression myExpr;
         bool parsed = false;
         try {
-            myExpr = AMD::generateExpression(str);
+            myExpr = AMD::reduce(AMD::generateExpression(str));
             std::cout << "Parsing succeeded: " << *myExpr << "\n";
             parsed = true;
         } catch (const std::exception& e) {
@@ -53,7 +53,7 @@ int main()
                 try {
                     //default target matrix is X
                     struct AMD::OptimizationFlags flags;
-                    flags.subtree_reduction = false;
+                    flags.subtree_reduction = true;
                     AMD::Expression derivative = 
                         AMD::generateDerivativeExpression(myExpr, "X", &flags);
                     std::cout << "Differentiation succeeded: " << 
