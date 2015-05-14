@@ -18,6 +18,7 @@ tools = [
             'pythondev',
             'common-tool',
             'eigen',
+            'cgicc',
         ]
 
 # Dict to store a mapping of command line flags for building packages to the
