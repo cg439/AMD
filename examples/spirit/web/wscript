@@ -6,7 +6,8 @@ out = top + '/build'
 
 task_name = 'web'
 int_deps  = ['AMD']
-ext_deps  = ['BOOST.SPIRIT']
+ext_deps  = ['BOOST.SPIRIT',
+             'CGICC']
 
 ###############################################################################
 
