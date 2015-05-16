@@ -25,7 +25,7 @@ When using this tool, the wscript will look like:
 USE_NAME = 'CGICC'
 
 # List of shared library names to check for
-LIBS = ['libcgicc.so']
+LIBS = []  # ['libcgicc.so.5.0.2']
 
 # List of static library names to check for
 STLIBS = ['libcgicc.a']
@@ -34,7 +34,7 @@ STLIBS = ['libcgicc.a']
 HEADER_NAMES = ['cgicc/Cgicc.h', 'cgicc/CgiDefs.h']
 
 # List of paths to search for shared libraries, in order of preference
-LIBPATHS = ['/lib', '/usr/lib', '/usr/local/lib']
+LIBPATHS = ['/usr/lib', '/lib', '/usr/local/lib']
 
 # List of paths to search for static libraries, in order of preference
 STLIBPATHS = LIBPATHS
@@ -130,5 +130,5 @@ def configure(ctx):
         use_name           = USE_NAME,
         use_libs           = None,
         installed_includes = ctx.env.DEPS_SRC,# + '/cgicc-cgicc-10219c95fe65',
-        installed_libpaths = None
+        installed_libpaths = '/usr/lib'
     )

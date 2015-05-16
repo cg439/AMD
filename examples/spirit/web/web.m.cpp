@@ -9,22 +9,22 @@
 #include <AMD/log.hpp>
 #include <AMD/derivative.hpp>
 
-//#include <cgicc/CgiDefs.h>
-//#include <cgicc/Cgicc.h>
+#include <cgicc/CgiDefs.h>
+#include <cgicc/Cgicc.h>
 
 using namespace std;
-//using namespace cgicc;
+using namespace cgicc;
 
 int main()
 {
-//    Cgicc formData;
+    Cgicc formData;
     string input, dif;
-  //  form_iterator fi = formData.getElement("input");  
-   /* if( !fi->isEmpty() && fi != (*formData).end()) {  
+    form_iterator fi = formData.getElement("input");  
+    if( !fi->isEmpty() && fi != (*formData).end()) {  
         input = **fi; 
     }else{
         input = "No input entered";
-    }*/
+    }
    /* fi = formData.getElement("dif");
     if( !fi->isEmpty() && fi != (*formData).end()) {  
         dif = **fi; 
@@ -32,7 +32,7 @@ int main()
         dif = "No dif term entered";
     }*/
 //    input = getenv("QUERY_STRING");
-    input = "tr(X+X)";
+    //input = "tr(X+X)";
     dif = "X";
 
     cout << "Content-type:text/html\r\n\r\n";

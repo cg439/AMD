@@ -33,7 +33,8 @@ def build(ctx):
     use_libs += [dep.upper() for dep in ext_deps
                              if not dep.upper().startswith('BOOST')]
     if ctx.env.USE_BOOST: use_libs += ['BOOST']
-
+    #if ctx.env.USE_CGICC: use_libs += ['CGICC']
+    #use_libs += ['CGICC']
     linkflags = ''
     from waflib.Utils import unversioned_sys_platform
     if unversioned_sys_platform() == 'darwin':
@@ -50,6 +51,8 @@ def build(ctx):
         target          = task_name,
         use             = use_libs,
         cxxflags        = ctx.env.GLOBAL_CXXFLAGS,
+        stlib 		= ['cgicc'],
+        stlibpath 	= ['/usr/lib'],
         linkflags       = linkflags,
         rpath           = rpath,
         export_includes = '.'
